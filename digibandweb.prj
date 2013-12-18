@@ -1,0 +1,44 @@
+<project version="Crimson Editor 3.60">
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\about.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\bugs.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\checkread.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\controllers.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\developers.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\documentation.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\downloads.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\edit.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\edituser.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\forums.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\index.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\install.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\joehtml.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\joinus.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\news.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\newtopic.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\policy.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\rankuser.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\reguser.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\reply.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\screens.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\showuser.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\style.css" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\sysreq.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\techinfo.php" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\videos.php" />
+</project>
+
+<workspace version="Crimson Editor 3.60">
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\screens.php" linenum="1" placement="0:1:-1:-1:-4:-23:110:110:857:380" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\showuser.php" linenum="1" placement="0:1:-1:-1:-4:-23:0:0:751:274" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\style.css" linenum="1" placement="0:1:-1:-1:-4:-23:22:22:773:296" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\sysreq.php" linenum="1" placement="0:1:-1:-1:-4:-23:44:44:795:318" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\techinfo.php" linenum="1" placement="0:1:-1:-1:-4:-23:66:66:817:340" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\videos.php" linenum="1" placement="0:1:-1:-1:-4:-23:88:88:839:362" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\about.php" linenum="23" placement="0:1:-1:-1:-4:-23:110:110:861:384" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\bugs.php" linenum="1" placement="0:1:-1:-1:-4:-23:0:0:751:274" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\checkread.php" linenum="1" placement="0:1:-1:-1:-4:-23:22:22:773:296" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\controllers.php" linenum="1" placement="0:1:-1:-1:-4:-23:44:44:795:318" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\developers.php" linenum="9" placement="0:1:-1:-1:-4:-23:66:66:817:340" />
+	<localfile path="W:\Inetpub\DigiBand.Seijinohki.Net\documentation.php" linenum="1" placement="2:3:-1:-1:-4:-23:88:88:839:362" />
+</workspace>
+

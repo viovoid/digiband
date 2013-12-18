@@ -1,0 +1,44 @@
+class AVIPlay {
+	public:
+		AVIPlay();
+		AVIPlay(const char *filename);
+		~AVIPlay();
+		
+		bool GetNextFrame();
+		bool Finished() const;
+		
+		unsigned int Width();
+		unsigned int Height();
+		Uint32 CurrentTime();
+		
+		AVFrame *CurrentFrameRGB();
+		
+		// DigiBand interface
+		bool playavi(const char *filename, int x, int y, int z, int w, int h, bool repeat = false);
+		GLuint avitexture;
+	private:
+		void loadVideo(const char *filename);
+		void destroyVideo();
+		
+		AVFormatContext *formatContext;
+		AVCodecContext *codecContext;
+		AVCodec *decoder;
+		AVFrame *frame;
+		// stuff for GetNextFrame()
+		AVPacket packet;
+		int bytesRemaining;
+		uint8_t *rawdata;
+		
+		AVFrame *frameRGB;
+		uint8_t *buffer;
+		int videoStream;
+		bool finished;
+		
+		// DigiBand compat
+		bool glInited, dorender;
+		char *curfilename;
+		uint8_t *scaledbuffer;
+		unsigned int bufw, bufh;
+		Uint32 firstframe_t;
+		Uint32 nextframe_t;
+};

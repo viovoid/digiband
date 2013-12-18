@@ -1,0 +1,63 @@
+# Project: DigiBand
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = DigiBand_private.res
+OBJ  = DigiBand.o Screens/logoscreen.o tileeffect.o testfile.o madcodec.o sndfilecodec.o stream.o vorbisfilecodec.o codec.o "../working\ content/drawtext-rewrite/freetypetest.o" "Copy\ of\ drawtext.o" $(RES)
+LINKOBJ  = DigiBand.o Screens/logoscreen.o tileeffect.o testfile.o madcodec.o sndfilecodec.o stream.o vorbisfilecodec.o codec.o "../working content/drawtext-rewrite/freetypetest.o" "Copy of drawtext.o" $(RES)
+LIBS =  -lmingw32 -lSDLmain -lSDL -lSDL_image -lopenGL32 -lGLU32 -mwindows -lgdi32  -liconv -lwinmm -lSDL_ttf -lxadec -lSDL_mixer -lavformat -lavcodec -lavutil -L"C:/lib" -mwindows  -s -march=i386 -m3dnow 
+INCS = 
+CXXINCS = 
+BIN  = DigiBand.exe
+CXXFLAGS = $(CXXINCS)   -O2 -Wno-deprecated -traditional-cpp -fno-access-control -fexceptions -fshort-double -fverbose-asm -fexpensive-optimizations -O3 -march=i386 -m3dnow
+CFLAGS = $(INCS)   -O2 -Wno-deprecated -traditional-cpp -fno-access-control -fexceptions -fshort-double -fverbose-asm -fexpensive-optimizations -O3 -march=i386 -m3dnow
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before DigiBand.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "DigiBand.exe" $(LIBS)
+
+DigiBand.o: DigiBand.cpp
+	$(CPP) -c DigiBand.cpp -o DigiBand.o $(CXXFLAGS)
+
+Screens/logoscreen.o: Screens/logoscreen.C
+	$(CPP) -c Screens/logoscreen.C -o Screens/logoscreen.o $(CXXFLAGS)
+
+tileeffect.o: tileeffect.cpp
+	$(CPP) -c tileeffect.cpp -o tileeffect.o $(CXXFLAGS)
+
+testfile.o: testfile.C
+	$(CPP) -c testfile.C -o testfile.o $(CXXFLAGS)
+
+madcodec.o: madcodec.cpp
+	$(CPP) -c madcodec.cpp -o madcodec.o $(CXXFLAGS)
+
+sndfilecodec.o: sndfilecodec.cpp
+	$(CPP) -c sndfilecodec.cpp -o sndfilecodec.o $(CXXFLAGS)
+
+stream.o: stream.cpp
+	$(CPP) -c stream.cpp -o stream.o $(CXXFLAGS)
+
+vorbisfilecodec.o: vorbisfilecodec.cpp
+	$(CPP) -c vorbisfilecodec.cpp -o vorbisfilecodec.o $(CXXFLAGS)
+
+codec.o: codec.cpp
+	$(CPP) -c codec.cpp -o codec.o $(CXXFLAGS)
+
+"../working\ content/drawtext-rewrite/freetypetest.o": ../working\ content/drawtext-rewrite/freetypetest.cpp
+	$(CPP) -c "../working content/drawtext-rewrite/freetypetest.cpp" -o "../working content/drawtext-rewrite/freetypetest.o" $(CXXFLAGS)
+
+"Copy\ of\ drawtext.o": Copy\ of\ drawtext.cpp
+	$(CPP) -c "Copy of drawtext.cpp" -o "Copy of drawtext.o" $(CXXFLAGS)
+
+DigiBand_private.res: DigiBand_private.rc 
+	$(WINDRES) -i DigiBand_private.rc --input-format=rc -o DigiBand_private.res -O coff 

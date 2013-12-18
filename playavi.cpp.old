@@ -1,0 +1,208 @@
+AVIPlay::AVIPlay()
+{
+	curfilename = NULL;
+	avitexture = 0;
+	glInited = false;
+	dorender = false;
+}
+
+AVIPlay::AVIPlay(const char *filename)
+{
+	AVIPlay();
+	loadVideo(filename);
+}
+
+void AVIPlay::loadVideo(const char *filename)
+{
+	if (curfilename != NULL)
+		throw string("A video already has been loaded");
+	
+	if (av_open_input_file(&formatContext, filename, NULL, 0, NULL) != 0)
+		throw string("av_open_input_file failed");
+	
+	if (av_find_stream_info(formatContext) < 0)
+		throw string("av_find_stream_info failed");
+	
+	dump_format(formatContext, 0, filename, false);
+	
+	videoStream = -1;
+	for (int i = 0; i < formatContext->nb_streams; i++) {
+		//if (formatContext->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
+			videoStream = i;
+			break;
+		//}
+	}
+	if (videoStream == -1)
+		throw string("Video file has no video streams");
+	codecContext = &formatContext->streams[videoStream]->codec;
+	
+	decoder = avcodec_find_decoder(codecContext->codec_id);
+	if (decoder == NULL)
+		throw string("Unable to find a video codec");
+	
+	if (avcodec_open(codecContext, decoder) < 0)
+		throw string("Unable to open video codec");
+	
+	frame = avcodec_alloc_frame();
+	packet.data = NULL;
+	bytesRemaining = 0;
+
+	frameRGB = avcodec_alloc_frame();
+	if (frameRGB == NULL)
+		throw string("Couldn't allocate an RGB frame");
+	int numBytes = avpicture_get_size(PIX_FMT_RGB24, codecContext->width, codecContext->height);
+	buffer = new uint8_t[numBytes];
+	avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_RGB24, codecContext->width, codecContext->height);
+	
+	if (curfilename != NULL) {
+		delete curfilename;
+	}
+	curfilename = new char[strlen(filename) + 1];
+	strcpy(curfilename, filename);
+	firstframe_t = SDL_GetTicks();
+}
+
+AVIPlay::~AVIPlay()
+{
+	if (curfilename != NULL)
+		destroyVideo();
+	if (glInited) {
+		glDeleteTextures(1, &avitexture);
+		delete [] scaledbuffer;
+	}
+}
+
+void AVIPlay::destroyVideo()
+{
+	if (curfilename == NULL)
+		throw string("A video hasn't been loaded");
+	
+	delete [] buffer;
+	av_free(frameRGB);
+	avcodec_close(codecContext);
+	av_close_input_file(formatContext);
+}
+
+bool AVIPlay::GetNextFrame()
+{
+	int bytesDecoded;
+	int frameFinished;
+	
+	while (true) {
+		while (bytesRemaining > 0) {
+			bytesDecoded = avcodec_decode_video(codecContext, frame, &frameFinished, rawdata, bytesRemaining);
+			if (bytesDecoded < 0)
+				throw string("Error while decoding a frame");
+			bytesRemaining -= bytesDecoded;
+			rawdata += bytesDecoded;
+			if (frameFinished)
+				return true;
+		}
+		
+		do {
+			if (packet.data != NULL)
+				av_free_packet(&packet);
+			
+			if (av_read_packet(formatContext, &packet) < 0)
+				goto loop_exit;
+		} while (packet.stream_index != videoStream);
+		
+		bytesRemaining = packet.size;
+		rawdata = packet.data;
+	}
+	
+loop_exit:
+	
+	bytesDecoded = avcodec_decode_video(codecContext, frame, &frameFinished, rawdata, bytesRemaining);
+	if (packet.data != NULL)
+		av_free_packet(&packet);
+	return frameFinished != 0;
+}
+
+unsigned int AVIPlay::Width()
+{
+	return codecContext->width;
+}
+
+unsigned int AVIPlay::Height()
+{
+	return codecContext->height;
+}
+
+Uint32 AVIPlay::CurrentTime()
+{
+	//return (Uint32)((double)codecContext->time_base.num / (double)codecContext->time_base.den * (double)frame->pts * 1000.0);
+	return (Uint32)frame->pts;
+}
+
+AVFrame *AVIPlay::CurrentFrameRGB()
+{
+	img_convert((AVPicture *)frameRGB, PIX_FMT_RGB24, (AVPicture *)frame, codecContext->pix_fmt, codecContext->width, codecContext->height);
+	
+	return frameRGB;
+}
+
+bool AVIPlay::playavi(const char *filename, int x, int y, int z, int w, int h, bool repeat)
+{
+	if (curfilename == NULL || strcmp(filename, curfilename) != 0) {
+		if (curfilename != NULL)
+			destroyVideo();
+		loadVideo(filename);
+	}
+	
+	if (!glInited) {
+		glGenTextures(1, &avitexture);
+		
+		double p = 1.0;
+		while ((bufw = (unsigned int)pow(2.0, p)) < codecContext->width) {
+			p += 1.0;
+		}
+		
+		p = 1.0;
+		while ((bufh = (unsigned int)pow(2.0, p)) < codecContext->height) {
+			p += 1.0;
+		}
+		
+		scaledbuffer = new uint8_t[bufw * bufh * 3];
+		glInited = true;
+	}
+	
+	while (SDL_GetTicks() > nextframe_t) {
+		GetNextFrame();
+		nextframe_t = firstframe_t + CurrentTime();
+		dorender = true;
+	}
+	
+	glBindTexture(GL_TEXTURE_2D, avitexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
+	if (dorender) {
+		AVFrame *rgbframe = CurrentFrameRGB();
+		for (int h = 0; h < codecContext->height; h++) {
+			memcpy(scaledbuffer + h * bufw * 3, rgbframe->data[0] + h * codecContext->width * 3, codecContext->width * 3);
+		}
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, bufw, bufh, 0, GL_RGB, GL_UNSIGNED_BYTE, scaledbuffer);
+		dorender = false;
+	}
+
+	double tc_u = (double)codecContext->width / (double)bufw;
+	double tc_v = (double)codecContext->height / (double)bufh;
+	
+	glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2d(0.0, 0.0);
+		glVertex3i(x, y, z);
+		
+		glTexCoord2d(0.0, tc_v);
+		glVertex3i(x, y + h, 0.0);
+		
+		glTexCoord2d(tc_u, tc_v);
+		glVertex3i(x + w, y + h, 0.0);
+		
+		glTexCoord2d(tc_u, 0.0);
+		glVertex3i(x + w, 0.0, 0.0);
+	glEnd();
+}

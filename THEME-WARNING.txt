@@ -1,0 +1,10 @@
+Warning about DigiBand themes:
+-------------------------------
+
+- If you have broken incomplete themes, DigiBand attempts to load elements of the theme while changing them.  This means that if files are missing in the attempt to load the theme, the program will possibly experience hanging or crashing.
+
+- Useless files/folders in the theme directory may also cause this!
+
+- To debug this, move any files, folders, or themes that may be broken out of this directory except the labeled 'default'.  By doing this, you can check to see if your default theme has been corrupted and needs replacing.  One way to repair this may be reinstalling.
+
+-Seijinohki PC Services (AKA Seijinohki PC soft) Takes no resposibility for 3rd party themes, if any of theme cause your computer to experience hanging or crashing, please contact the creator of the theme.
