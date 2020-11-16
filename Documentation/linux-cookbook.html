@@ -1,0 +1,181 @@
+<html>
+<head>
+<title>Linux Cookbook</title>
+<style type="text/css">
+	div {
+		border:1px dashed;
+		padding:4px;
+		color: darkblue;
+		background: #EEEEFF;
+	}
+	div.section{
+		border:0px none;
+		padding:20px;
+		color:black;
+		background: white;
+	}
+	span {
+		padding:20px;	
+	}
+	b {
+		color: #330033;
+		border-bottom: 3px double blue;
+		font-size: 14px;
+	}	
+	body {
+		font-family: sans-serif 'Arial';
+		font-size: 12px;
+		padding:15px;
+	}
+	a {
+		color: darkblue;
+		padding: 0px;
+	}
+	ul {
+		padding:0px;	
+	}
+</style>
+</head>
+<body>
+<b>The Linux Cookbook</b><br><br>
+<div>
+1. <a href="#section1">Important information about the DigiBand developement environment for Linux</a><br>
+2. <a href="#section2">Download and installing SDL</a><br>
+3. <a href="#section3">Download and installing FFMPEG</a><br>
+4. <a href="#section4">Download and installing OpenAL</a><br>
+5. <a href="#section5">Download and installing libsndfile</a><br>
+6. <a href="#section6">Time to ldconfig</a><br>
+7. <a href="#section7">Compiling DigiBand</a><br>
+8. <a href="#section8">Definition of compiling flags</a><br>
+9. <a href="#section9">Understanding the DigiBand code tree structure</a><br>
+</div>
+<ul>
+<br>
+<a name="section1"></a><b>1. Important information about the DigiBand developement environment for Linux</b>
+<div class="section">
+This is a cookbook on how I compiled DigiBand for Slackware 12.  It is not going to be very specific as things 
+are different for each distro.  Please understand you will need a basic understanding how to compile and package
+applications for linux before attempting to compile DigiBand.
+</div>
+<a name="section2"></a><b>2. Download and installing SDL</b>
+<div class="section">
+Most distros come with SDL, you can more than likely obtain it using your package managing system.<br>
+Only compile if you absolutely need to, and compile all libraries with:
+<div>
+./configure --prefix=/usr/local<br>
+make<br>
+make install<br>
+</div>
+You will need the following SDL libraries:<br>
+<li>SDL_ttf</li>
+<li>SDL_image</li>
+</div>
+<a name="section3"></a><b>3. Download and installing FFMPEG</b>
+<div class="section">
+You will need to download ffmpeg, as unfortunately for this version of DigiBand, we have used some features of ffmpeg
+that have been deprecated, and most distros install a version of ffmpeg that is not suitable for DigiBand.  Please 
+follow these instructions for using FFMPEG.<br>
+<li>Download <a href="http://www.digiband.net/Downloads/ffmpeg-0.4.9-p20051216.tar.bz2">ffmpeg</a>.  We supply this version,
+as it's the only version we support as of right now.  You may use newer svn checkouts, but it will be at your own risk.</li>
+<li>Open a console or terminal and navigate to the directory you have downloaded ffmpeg.</li>
+<li>type</li>
+<div>tar -xvjf ffmpeg-0.4.9-p20051216.tar.bz2<br>
+cd ffmpeg-0.4.9-p20051216<br>
+./configure --prefix=/usr/local --enable-shared<br>
+make<br>
+make install<br>
+</div>
+</div>
+<a name="section4"></a><b>4. Download and installing OpenAL</b>
+<div class="section">
+This is not a mandatory compile, if your distro has a package of it, it is recommended to use your distros package.<br>
+<li>Download the <a href="http://www.openal.org/openal_webstf/downloads/openal-0.0.8.tar.gz">OpenAL Source</a></li>
+<li>Open a console or terminal and navigate to the directory you have downloaded OpenAL.</li>
+<li>type</li>
+<div>./configure --prefix=/usr/local<br>
+make<br>
+make install<br>
+</div>
+This should be all that you need to do for OpenAL.<br>
+</div>
+<a name="section5"></a><b>5. Download and installing libsndfile</b>
+<div class="section">
+This is not a mandatory compile, if your distro has a package of it, it is recommended to use your distros package.<br>
+<li>Download <a href="http://www.mega-nerd.com/libsndfile/libsndfile-1.0.17.tar.gz">libsndfile</a></li>
+<li>Open a console or terminal and navigate to the directory you have downloaded libsndfile.</li>
+<li>type</li>
+<div>./configure --prefix=/usr/local<br>
+make<br>
+make install<br>
+</div>
+</div>
+<a name="section6"></a><b>6. Time to ldconfig</b>
+<div class="section">
+<li>Open a console or terminal.</li>
+<li>type:</li>
+<div>
+ldconfig
+</div>
+</div>
+<a name="section7"></a><b>7. Compiling DigiBand</b>
+<div class="section">
+Now are you ready for the fun part?  If everything has gone well up til here, this next step should be
+blindlessly easy.  
+<li>Download the <a href="http://www.digiband.net/index.php?section=downloads">DigiBand X.X.X for Linux</a> to a location you will be using DigiBand, recommended /usr/local</li>
+<li>Open a console or terminal and navigate to where you downloaded DigiBand.</li>
+<li>type:</li>
+<div>
+tar -xvjf digiband-vX.X.X.tar.bz2
+cd DigiBand
+make -f Makefile.linux
+</div>
+if everything went okay all you should see is:
+<div>
+:~/DigiBand/source# make -f Makefile.linux<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o DigiBand.o DigiBand.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o codec.o codec.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o madcodec.o madcodec.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o sndfilecodec.o sndfilecodec.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o stream.o stream.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o vorbisfilecodec.o vorbisfilecodec.cpp<br>
+g++ `sdl-config --cflags` `pkg-config --cflags sndfile` `pkg-config --cflags libavformat` -DLINUX -DDIGIBAND -Wno-deprecated -O2 -fverbose-asm -Wno-deprecated-declarations   -c -o alsubsys.o alsubsys.cpp<br>
+g++ `sdl-config --libs` -lSDL_image -lSDL_ttf -lSDL -lGL -lGLU `pkg-config --libs libavformat` -lopenal `pkg-config --libs vorbisfile` `pkg-config --libs sndfile` -lmad DigiBand.o codec.o madcodec.o sndfilecodec.o stream.o vorbisfilecodec.o alsubsys.o -o DigiBand<br>
+:~/DigiBand/source#<br>
+</div>
+<li>now type:</li>
+<div>
+cp DigiBand ..<br>
+</div>
+</div>
+<a name="section8"></a><b>8. Definition of compiling flags</b>
+<div class="section">
+You can pass these optional flags to digiband when compiling with -D.  Enabling them requires knowledge of editing
+Makefiles.  Here is a list and definition of the flags:<br>
+<li>DEBUG - Tells DigiBand to display useful debug information such as error codes and timing codes.</li>
+<li>EXCESSIVE - Tells DigiBand to be a very mouthy program.  This will cause DigiBand to announce everything
+it is currently doing.  Good for finding memory leaks or problematic code.</li>
+<li>EXCESSIVELITE - Tells excessive to tone it down a little.  It will restrain a few events to allow DigiBand
+to still be playable on higher end systems (requires a 4200+ or better processor).</li>
+<li>ARCADE - toggles a few bits of code for optimization in a arcade cabinent environment, as of right now this
+is not really implemented.</li>
+<li>DEBUGDRAWTEXT - Prints very specific information about the DrawText subsystem for DigiBand.</li>
+<li>DIGIBAND - This used to be used for liboswego AL, but Velex has since merged the differences into one
+library.</li>
+<li>DEBUGSONGLOAD - Prints specific information while a song is being loaded.</li>
+<li>OPTIMIZE/RELEASE - Compiles DigiBand with the optimization flags used in the official branded release.</li>
+<li>_CONSOLE/_MBCS - If you compiled SDL, you can use this to display the debug information in a console
+window as it's happening live instead of stdout.txt.</li>
+<li>NOOSWEGO - Disables the Oswego AL sound system.  This will disable any sound from DigiBand.</li>
+</div>
+<a name="section9"></a><b>9. Understanding the DigiBand code tree structure</b>
+<div class="section">
+DigiBand was coded using C++ and C++ libraries, but I did not code it traditionally taking advantage
+of some features from C++.  Instead I optimized for speed by compiling it as one giant program.
+The oswego AL library is coded as object oriented, but the base code and subsystems are in a 
+Hierarchy style of coding with the exception of a few classes having header files.  So please
+keep this in mine when editing DigiBand.  Alot of variables are defined in globals.h, and alot of
+functions are included in a very specific order in DigiBand.cpp.
+</div>
+</ul>
+</body>
+</html>

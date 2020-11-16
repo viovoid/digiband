@@ -1,0 +1,14 @@
+Downloaded ffmpeg (http://www.digiband.net/Downloads/ffmpeg-0.4.9-p20051216.tar.bz2)
+compiled with:
+./configure --prefix=/usr/local --enable-shared 
+
+Downloaded OpenAL (using the most recent from openal.org)
+compiled with:
+./configure --prefix=/usr/local
+
+Downloaded libsndfile from http://www.mega-nerd.com/libsndfile/libsndfile-1.0.17.tar.gz
+compiled with
+./configure --prefix=/usr/local
+
+ldconfig
+
