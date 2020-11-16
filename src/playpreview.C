@@ -27,7 +27,8 @@ void playpreview(bool kill=false){
 	static bool firstrun=true;
 	static char thepreview[256];
 	if (firstrun){
-		memset(thepreview, 0, 255 * sizeof(char *));
+//		memset(thepreview, 0, 255 * sizeof(char *));
+		memset(thepreview, 0, 256);
 		firstrun=false;
 	}
 	snprintf(thepreview,355,"NULL");

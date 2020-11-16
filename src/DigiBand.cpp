@@ -186,7 +186,7 @@ void cleanup(){
 }
 
 int main(int argc, char* argv[]){
-    #ifdef EXCESSIVE
+	#ifdef EXCESSIVE
 	printf("main\n");
 	#endif
 	//for (int a=0;a<12;a++){
@@ -194,8 +194,9 @@ int main(int argc, char* argv[]){
 	//}
 	srand(time(0));
 	settings.load();
-	screeninit(resx,resy,drumbpp,drumfullscreen);
-	playpreview();
+//	screeninit(resx,resy,drumbpp,drumfullscreen);
+	screeninit(resx,resy,drumbpp,false);
+//	playpreview();
 	systemload();
 	isloading=false;
 	gameloop();

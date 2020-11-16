@@ -25,7 +25,7 @@ int songpos(void *wtf){
 	while(appisrunning){
         #ifdef EXCESSIVE
         #ifndef EXCESSIVELITE
-		printf("(song position loop)\n");
+//		printf("(song position loop)\n");
 		#endif
 		#endif
 		int temp=SDL_GetTicks();

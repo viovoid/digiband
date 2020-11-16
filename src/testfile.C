@@ -19,6 +19,9 @@
 *      Boston, MA 02111-1307, USA
 */
 bool testfile(char marmot[256]){
+#ifdef DEBUG
+printf("testing file: %s\n", marmot);
+#endif
 	bool isgood=true;
 	struct stat filestat;
 	if(stat(marmot,&filestat)!=0){

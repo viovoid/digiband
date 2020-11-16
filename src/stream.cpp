@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+#include <unistd.h>
+
 #include "alsubsys.h"
 #include "stream.h"
 #include "madcodec.h"
@@ -30,6 +32,7 @@ void Stream::class_init() {
 	alGetError();
 	alGenSources(1, &src);
 	while (alGetError() == AL_NO_ERROR && allocated_sources.size() < MAX_SOURCES) {
+
 		allocated_sources[src] = NULL;
 		alGenSources(1, &src);
 	}
@@ -166,7 +169,7 @@ int Stream::play(bool loop, const string &file) {
 	// play right away while we fill up extra buffers
 	if (needs_prefill) {
 		source = get_source();
-#ifdef DEBUG
+#ifdef DEBUG0
 		cout << __PRETTY_FUNCTION__ << ": instance #" << (uint32_t)this << " is using source " << source << endl;
 #endif
 		alSourceQueueBuffers(source, 1, buffers + 0);
@@ -369,11 +372,10 @@ ALuint Stream::get_source() {
 	
 	bool winrar = false;
 	ALuint ret;
-	
 	while (winrar == false) {
 		for (map< ALuint, Stream *>::iterator i = allocated_sources.begin(); i != allocated_sources.end() && !winrar; i++) {
-			if ((*i).second == NULL) {
-				ret = (*i).first;
+			if (i->second == NULL) {
+				ret = i->first;
 				winrar = true;
 			}
 		}

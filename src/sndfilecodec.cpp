@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 #endif
+#include <cstring>
 
 #include "sndfilecodec.h"
 using namespace Oswego::AL;
@@ -32,6 +33,7 @@ int SndFileCodec::open(const string &fname) {
 		format = AL_FORMAT_STEREO16;
 	}
 	frequency = info.samplerate;
+	return 0;
 }
 
 void SndFileCodec::restart() {

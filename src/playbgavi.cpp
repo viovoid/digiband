@@ -20,7 +20,7 @@
 */
 //THIS IS SOME FUCKED UP SHIT!!!!
 int playbgavi(void *wtf){
-	//return 0;
+	return 0;
 	#ifdef EXCESSIVE
 	printf("playbgavi\n");
 	#endif
@@ -30,7 +30,7 @@ int playbgavi(void *wtf){
 	}
 	snprintf(curravi,255, "NULL");
 	while (appisrunning){
-        #ifdef EXCESSIVE
+		#ifdef EXCESSIVE
 		printf("(bg master aviloop)\n");
 		#endif
 		bool bgplayed=false,gpplayed=false;

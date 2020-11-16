@@ -4,6 +4,7 @@
 #include <iostream>
 using namespace std;
 #endif
+#include <cstring>
 
 #include <sys/stat.h>
 #ifndef WIN32
